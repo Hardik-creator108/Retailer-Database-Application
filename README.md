@@ -1,2 +1,0 @@
-# Retailer Database Application
- 
