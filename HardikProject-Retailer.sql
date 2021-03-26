@@ -52,12 +52,13 @@ CREATE TABLE Retailer.Customer
 GO
 
 
-
+DROP TABLE Retailer.Payment;
+GO
 
 CREATE TABLE Retailer.Payment
 (
   PaymentId INT NOT NULL CONSTRAINT PKPayment PRIMARY KEY (PaymentId) IDENTITY(1,1),
-  PaymentStatus VARCHAR(25) NOT NULL
+  PaymentStatus BIT  NOT NULL
 );
 GO
 
@@ -149,6 +150,9 @@ FROM Retailer.Orders
 WHERE FirstDaySales.SalesCount > 0;
 GO
 
+Drop FUNCTION Retailer.Customers_ReturnOrderCount;
+GO
+
 CREATE FUNCTION Retailer.Customers_ReturnOrderCount
 (
   @CustomerId int,
@@ -185,6 +189,23 @@ FROM Retailer.Payment
 		      JOIN Retailer.Customer
 			 on Customer.CustomerId = Orders.CustomerId;
 	go	    
+
+
+DROP VIEW Retailer.Summary;
+GO
+
+CREATE VIEW Retailer.Summary
+AS
+SELECT Payment.PaymentId, Payment.PaymentStatus, Customer.CustomerId, 
+       CASE WHEN PaymentStatus = 0 THEN 'Defaulter'
+	        else 'Regular' END AS RegularCustomer
+FROM Retailer.Payment
+    JOIN Retailer.Orders
+	       on Orders.PaymentId = Payment.PaymentId
+		      JOIN Retailer.Customer
+			 on Customer.CustomerId = Orders.CustomerId;
+GO
+
 
 	select * from Retailer.Summary;
 	GO
