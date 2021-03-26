@@ -1,3 +1,9 @@
+USE master;
+
+
+DROP DATABASE IF EXISTS HardikProject;
+GO
+
 CREATE DATABASE HardikProject;
 GO
 
@@ -9,8 +15,7 @@ GO
 CREATE SCHEMA Retailer;
 GO
 
-DROP TABLE Retailer.Supplier;
-GO
+
 
 
 CREATE TABLE Retailer.Supplier
@@ -22,8 +27,6 @@ CREATE TABLE Retailer.Supplier
 );
 GO
 
-DROP TABLE Retailer.Inventory;
-GO
 
 CREATE TABLE Retailer.Inventory
 (
@@ -38,8 +41,7 @@ CREATE TABLE Retailer.Inventory
 GO
 
 
-DROP TABLE Retailer.Customer;
-GO
+
 
 CREATE TABLE Retailer.Customer
 (
@@ -52,8 +54,7 @@ CREATE TABLE Retailer.Customer
 GO
 
 
-DROP TABLE Retailer.Payment;
-GO
+
 
 CREATE TABLE Retailer.Payment
 (
@@ -62,8 +63,6 @@ CREATE TABLE Retailer.Payment
 );
 GO
 
-DROP TABLE Retailer.Orders;
-GO
 
 CREATE TABLE Retailer.Orders
 (
@@ -86,8 +85,7 @@ ALTER TABLE Retailer.Orders
 GO
 
 
-DROP TABLE Retailer.Shipment;
-GO
+
 
 CREATE TABLE Retailer.Shipment
 (
@@ -118,8 +116,7 @@ AS
 GO
 
 
-EXEC  Profit.MonthlyProfitReportByMonth @Month=4;
-GO
+
 
 
 CREATE INDEX IDX_Inventory_Quantity ON Retailer.Inventory (Quantity)
@@ -143,15 +140,9 @@ RETURN ( SELECT COUNT(*) AS SalesCount,
 GO
 
 
-SELECT CustomerId, FirstDaySales.SalesCount, FirstDaySales.Tag
-FROM Retailer.Orders
-     OUTER APPLY Retailer.Customers_ReturnOrderCountSetSimple
-	           (CustomerId, OrdersDate) as FirstDaySales
-WHERE FirstDaySales.SalesCount > 0;
-GO
 
-Drop FUNCTION Retailer.Customers_ReturnOrderCount;
-GO
+
+
 
 CREATE FUNCTION Retailer.Customers_ReturnOrderCount
 (
@@ -174,25 +165,8 @@ AS
 GO
 
 
-SELECT CustomerId, Retailer.Customers_ReturnOrderCount(CustomerId, OrdersDate) AS ALLORDERS
-FROM Retailer.Orders;
-GO
-
-CREATE VIEW Retailer.Summary
-AS
-SELECT Payment.PaymentId, Payment.PaymentStatus, Customer.CustomerId, 
-       CASE WHEN PaymentStatus = 0 THEN 'Defaulter'
-	        else 'Regular' END AS RegularCustomer
-FROM Retailer.Payment
-    JOIN Retailer.Orders
-	       on Orders.PaymentId = Payment.PaymentId
-		      JOIN Retailer.Customer
-			 on Customer.CustomerId = Orders.CustomerId;
-	go	    
 
 
-DROP VIEW Retailer.Summary;
-GO
 
 CREATE VIEW Retailer.Summary
 AS
@@ -207,8 +181,7 @@ FROM Retailer.Payment
 GO
 
 
-	select * from Retailer.Summary;
-	GO
+	
 
 
 
