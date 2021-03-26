@@ -116,13 +116,6 @@ AS
 GO
 
 
-
-
-
-CREATE INDEX IDX_Inventory_Quantity ON Retailer.Inventory (Quantity)
-	WHERE Quantity < 20;
-GO
-
 CREATE FUNCTION Retailer.Customers_ReturnOrderCountSetSimple
 (
    @CustomerId int,
@@ -181,7 +174,8 @@ FROM Retailer.Payment
 GO
 
 
-	
+CREATE UNIQUE INDEX IDX_StockQuantity ON Retailer.Inventory (Quantity) WHERE Quantity < 20;
+GO
 
 
 
