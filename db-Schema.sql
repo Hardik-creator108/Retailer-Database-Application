@@ -54,7 +54,27 @@ CREATE TABLE Retailer.Customer
 GO
 
 
+ALTER TABLE Retailer.Customer
+    ADD  FirstName VARCHAR(50) NOT NULL,
+	     LastName VARCHAR(50) NOT NULL;
+GO
 
+ALTER TABLE Retailer.Customer
+   DROP COLUMN CustomerName;
+GO
+
+ALTER TABLE Retailer.Customer
+    DROP COLUMN CustomerAddress;
+GO
+
+ALTER TABLE Retailer.Customer
+     ADD StreetNumber INT ,
+	      StreetName VARCHAR(100) ,
+		  StreetSuffix VARCHAR(100) ,
+		  PostalCode VARCHAR(10) ,
+		  City VARCHAR(20) ,
+		  Provision VARCHAR(20);
+GO
 
 CREATE TABLE Retailer.Payment
 (
@@ -174,8 +194,8 @@ FROM Retailer.Payment
 GO
 
 
-CREATE UNIQUE INDEX IDX_StockQuantity ON Retailer.Inventory (Quantity) WHERE Quantity < 20;
-GO
 
+CREATE  INDEX IDX_StockQuantity ON Retailer.Inventory (Quantity) WHERE Quantity < 20;
+GO
 
 
